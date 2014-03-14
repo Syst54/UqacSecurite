@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
 
-public class MainActivity extends Activity {
+public class SpyActivity extends Activity {
 
+	//Petite modif juste pour tester :)
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
