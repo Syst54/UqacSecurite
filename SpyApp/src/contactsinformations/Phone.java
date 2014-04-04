@@ -1,4 +1,4 @@
-package com.example.spyapp;
+package contactsinformations;
 
 public class Phone {
  	private String number;

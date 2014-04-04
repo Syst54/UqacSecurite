@@ -2,7 +2,6 @@ package contactsinformations;
 
 import java.util.ArrayList;
 
-import com.example.spyapp.Phone;
 
 
 import android.content.ContentResolver;

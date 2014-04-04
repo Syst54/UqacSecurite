@@ -2,7 +2,6 @@ package contactsinformations;
 
 import java.util.ArrayList;
 
-import com.example.spyapp.Phone;
 
 
 import android.content.ContentResolver;
@@ -16,6 +15,11 @@ public class ListContact {
 	private String WhosContactList;
 	private ArrayList<Contact> ContactList;
 	
+	
+	public ListContact() {
+		
+	}
+
 	public String getWhosContactList() {
 		return WhosContactList;
 	}
@@ -55,6 +59,7 @@ public class ListContact {
 		      //Ajout des téléphones au contact
 		      Phone phone=new Phone(phoneNumber, timeContact);
 		      contact.addPhone(phone);
+		      Log.d("phone",phoneNumber+timeContact);
 		      } 
 		      phones.close(); 
 		   }
@@ -68,12 +73,12 @@ public class ListContact {
 		      // Ajout des emails au contact
 		      String emailAddress = emails.getString( 
 		      emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)); 
-		
+		      Log.d("mail",emailAddress);
 		      contact.addEmail(emailAddress);
 		   } 
 		   
 		   emails.close();
-		   
+		   // Ajout des adresses au contact
 		   String addrWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
            String[] addrWhereParams = new String[]{contactId,
                ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE};
@@ -94,12 +99,12 @@ public class ListContact {
                             addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
                String type = addrCur.getString(
                             addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE));
-
+Log.d("adresse", poBox+street+city+state+postalCode+country+type);
              Adresse  adresse= new Adresse(poBox, street,city, state,postalCode,country,type);
              contact.addAddress(adresse);
            }
            addrCur.close();
-           
+           // Ajout de l'organisation au contact
            String orgWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
            String[] orgWhereParams = new String[]{contactId,
                ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
@@ -110,6 +115,7 @@ public class ListContact {
                String title = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
            Organization organization=new Organization(orgName, title);
            contact.setOrganization(organization);
+           Log.d("organisation",orgName+title);
            }
            orgCur.close();
            ContactList.add(contact);
