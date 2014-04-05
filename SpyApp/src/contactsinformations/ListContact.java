@@ -2,11 +2,10 @@ package contactsinformations;
 
 import java.util.ArrayList;
 
-
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -40,17 +39,30 @@ public class ListContact {
 	public void CreateListContactFromPhone(Context context){
 		
 		ContentResolver cr = context.getContentResolver();
+
+
+		
 		Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null); 
 		
 		while (cursor.moveToNext()) { 
+			ArrayList<String>emailsList=new ArrayList<String>();
+			ArrayList<Contact>contactList=new ArrayList<Contact>();
+			ArrayList<Phone>phoneList= new ArrayList<Phone>();
+			ArrayList<Adresse> adresseList = new ArrayList<Adresse>();
+			ArrayList<String> SMSList= new ArrayList<String>();
 			// Création d'un nouveau contact
 			Contact contact=new Contact();
 			// Récupération de l'id
 		   String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID)); 
 		   contact.setId(contactId);
-		   
+		   String Displayname = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+		   contact.setDisplayName(Displayname);
+
+
+		    
 		   String hasPhone = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)); 
-		   if (Boolean.parseBoolean(hasPhone)) { 
+		 // Log.d("name","id :"+contactId+" "+"name :"+Displayname);
+		   // if (Boolean.parseBoolean(hasPhone)) { 
 		      // You know it has a number so now query it like this
 		      Cursor phones = cr.query( ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = "+ contactId, null, null); 
 		      while (phones.moveToNext()) { 
@@ -58,52 +70,51 @@ public class ListContact {
 		      String timeContact = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TIMES_CONTACTED));
 		      //Ajout des téléphones au contact
 		      Phone phone=new Phone(phoneNumber, timeContact);
-		      contact.addPhone(phone);
-		      Log.d("phone",phoneNumber+timeContact);
+		      phoneList.add(phone);
+		    
+		    //  Log.d("phone","phone :"+phoneNumber+" timeContact :"+timeContact);
 		      } 
 		      phones.close(); 
-		   }
+		   //}
 
 		   Cursor emails =cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, null, ContactsContract.CommonDataKinds.Email.CONTACT_ID + " = " + contactId, null, null); 
 		   // Ajout du nom du contact
-		   String name= emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-		   contact.setDisplayName(name);
+		   //String name= emails.getString(emails.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+		   //contact.setDisplayName(name);
 		   
 		   while (emails.moveToNext()) { 
 		      // Ajout des emails au contact
 		      String emailAddress = emails.getString( 
 		      emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)); 
-		      Log.d("mail",emailAddress);
-		      contact.addEmail(emailAddress);
+		    //  Log.d("mail","mail :"+emailAddress);
+		     // contact.addEmail(emailAddress);
+		    emailsList.add(emailAddress);
 		   } 
 		   
 		   emails.close();
 		   // Ajout des adresses au contact
-		   String addrWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
-           String[] addrWhereParams = new String[]{contactId,
-               ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE};
-           Cursor addrCur = cr.query(ContactsContract.Data.CONTENT_URI,
-                       null, null, null, null);
-           while(addrCur.moveToNext()) {
-               String poBox = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POBOX));
-               String street = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
-               String city = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-               String state = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-               String postalCode = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
-               String country = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-               String type = addrCur.getString(
-                            addrCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.TYPE));
-Log.d("adresse", poBox+street+city+state+postalCode+country+type);
-             Adresse  adresse= new Adresse(poBox, street,city, state,postalCode,country,type);
-             contact.addAddress(adresse);
-           }
-           addrCur.close();
+		   String num="";
+		   String street = "";
+		   String city = "";
+		   String state = "";
+		   String postcode = "";
+		   String country = "";
+		   
+		   
+		   Cursor addCur = cr.query(ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_URI, null, ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID + " = ?",  new String[]{ContactsContract.Contacts._ID}, null); 
+           while (addCur.moveToNext()) { 
+        	   		//num=addCur.getString(addCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.));
+                    /*street = addCur.getString(addCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.STREET));
+                    city = addCur.getString(addCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                    state = addCur.getString(addCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                    postcode = addCur.getString(addCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.POSTCODE));
+                    country = addCur.getString(addCur.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+           */
+                    Adresse adresse = new Adresse(num,street, city,state, postcode, country, "none");
+                    adresseList.add(adresse);
+                    Log.d("addr",num);
+           } 
+           addCur.close();
            // Ajout de l'organisation au contact
            String orgWhere = ContactsContract.Data.CONTACT_ID + " = ? AND " + ContactsContract.Data.MIMETYPE + " = ?";
            String[] orgWhereParams = new String[]{contactId,
@@ -115,13 +126,22 @@ Log.d("adresse", poBox+street+city+state+postalCode+country+type);
                String title = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
            Organization organization=new Organization(orgName, title);
            contact.setOrganization(organization);
-           Log.d("organisation",orgName+title);
+          // Log.d("organisation","org name :"+orgName+" title :"+title);
            }
            orgCur.close();
-           ContactList.add(contact);
+           contact.setEmail(emailsList);
+           contact.setPhone(phoneList);
+           contact.setAddresses(adresseList);
+           
+           //contactList.add(contact);
+           
+           Log.d("contact","name :"+contact.getDisplayName()+" phone :"+contact.getPhone().get(0).getNumber().toString());
+           setContactList(contactList);
 		}
 		
 		cursor.close(); 
+		
 		 
 	}
+	
 }

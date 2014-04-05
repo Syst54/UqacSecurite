@@ -3,6 +3,7 @@ package phoneDeviceInformations;
 import java.util.ArrayList;
 
 import android.R.string;
+import android.util.Log;
 
 public class PhoneDevice {
 
@@ -43,8 +44,11 @@ public class PhoneDevice {
 		this.manufacturer=android.os.Build.MANUFACTURER;
 		this.product=android.os.Build.PRODUCT;
 		this.User=android.os.Build.USER;
+		String ok= android.os.Build.HOST;
+		//Log.d("phonedevice",getDevice()+ " "+getHardware()+ " "+getManufacturer()+ " "+getProduct()+ " "+getUser());
+		Log.d("phonedevice",ok);
 	}
-	public ArrayList<String> getAllPhoneDeviceInformations(){
+	public void getAllPhoneDeviceInformations(){
 		ArrayList<String> phonedeviceinformations= new ArrayList<String>();
 		
 		phonedeviceinformations.add(device);
@@ -53,6 +57,7 @@ public class PhoneDevice {
 		phonedeviceinformations.add(product);
 		phonedeviceinformations.add(User);
 		
-		return phonedeviceinformations;
+		
+		//return phonedeviceinformations;
 	}
 }

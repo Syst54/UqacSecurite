@@ -1,4 +1,6 @@
-package com.example.spyapp;
+package smsInformations;
+
+import java.util.ArrayList;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -9,10 +11,25 @@ import android.util.Log;
 
 public class GetSMS {
 
+private ArrayList<SMS> SmsList;	
+	
 	public GetSMS(){}
 	
 	
+	public ArrayList<SMS> getSmsList() {
+		return SmsList;
+	}
+
+
+	public void setSmsList(ArrayList<SMS> smsList) {
+		SmsList = smsList;
+	}
+
+
 	public void getAllSms(Context context) {
+		
+		ArrayList<SMS> smslist= new ArrayList<SMS>();
+		
 	    Uri message = Uri.parse("content://sms/");
 	    ContentResolver cr = context.getContentResolver();
 	    Cursor c = cr.query(message, null, null, null, null);
@@ -20,7 +37,8 @@ public class GetSMS {
 	    if (c.moveToFirst()) {
 	        for (int i = 0; i < totalSMS; i++) {
 
-	            Log.d("GetSMS",
+	        	SMS sms= new SMS();
+	           /* Log.d("GetSMS",
 	                    "Contact number : "
 	                            + c.getString(c
 	                                    .getColumnIndexOrThrow("address"))
@@ -35,11 +53,22 @@ public class GetSMS {
 	                            + getContactName(
 	                            		context.getApplicationContext(),
 	                                    c.getString(c
-	                                            .getColumnIndexOrThrow("address"))));
+	                                            .getColumnIndexOrThrow("address"))));*/
 
+	            sms.setContactName(getContactName(
+	                            		context.getApplicationContext(),
+	                                    c.getString(c
+	                                            .getColumnIndexOrThrow("address"))));
+	            sms.setContactNumber(c.getString(c
+	                                    .getColumnIndexOrThrow("address")));
+	            
+	            sms.setMessage( c.getString(c.getColumnIndexOrThrow("body")));
+	            
+	            smslist.add(sms);
 	            c.moveToNext();
 	        }
 	    }
+	    setSmsList(smslist);
 	    c.close();
 
 	}

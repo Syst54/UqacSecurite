@@ -15,7 +15,7 @@ public class Contact {
 	private String displayName;
 	private ArrayList<Phone> phone;
 	private ArrayList<String> email;
-	
+
 	private ArrayList<Adresse> addresses = new ArrayList<Adresse>();
 	
 	private contactsinformations.Organization organization;
@@ -24,6 +24,7 @@ public class Contact {
 	public Contact() {
 		super();
 	}
+	
 	public contactsinformations.Organization getOrganization() {
 		return organization;
 	}
