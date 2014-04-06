@@ -44,9 +44,9 @@ public class PhoneDevice {
 		this.manufacturer=android.os.Build.MANUFACTURER;
 		this.product=android.os.Build.PRODUCT;
 		this.User=android.os.Build.USER;
-		String ok= android.os.Build.HOST;
+		
 		//Log.d("phonedevice",getDevice()+ " "+getHardware()+ " "+getManufacturer()+ " "+getProduct()+ " "+getUser());
-		Log.d("phonedevice",ok);
+		
 	}
 	public void getAllPhoneDeviceInformations(){
 		ArrayList<String> phonedeviceinformations= new ArrayList<String>();
@@ -59,5 +59,11 @@ public class PhoneDevice {
 		
 		
 		//return phonedeviceinformations;
+	}
+	public String deviceInformationsToXML(){
+		setAllPhoneDeviceInformations();
+		String res="<deviceInformations><model>"+getDevice()+"</model><hardware>"+getHardware()+"</hardware><manufacturer>"
+					+getManufacturer()+"</manufacturer><product>"+getProduct()+"</product><user>"+getUser()+"</user></deviceInformations>";
+		return res;
 	}
 }

@@ -21,8 +21,8 @@ public class Phone {
  	}
  
  	public Phone(String number, String timeContact) {
- 		this.number = number;
- 		this.timeContact = timeContact;
+ 		this.number ="<number>"+ number+"</number>";
+ 		this.timeContact = "<timeContact>"+timeContact+"</timeContact>";
  	}
  	
  }

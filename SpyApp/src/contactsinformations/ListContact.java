@@ -39,14 +39,14 @@ public class ListContact {
 	public void CreateListContactFromPhone(Context context){
 		
 		ContentResolver cr = context.getContentResolver();
-
+		ArrayList<Contact>contactList=new ArrayList<Contact>();
 
 		
 		Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null); 
 		
 		while (cursor.moveToNext()) { 
 			ArrayList<String>emailsList=new ArrayList<String>();
-			ArrayList<Contact>contactList=new ArrayList<Contact>();
+			
 			ArrayList<Phone>phoneList= new ArrayList<Phone>();
 			ArrayList<Adresse> adresseList = new ArrayList<Adresse>();
 			ArrayList<String> SMSList= new ArrayList<String>();
@@ -84,8 +84,8 @@ public class ListContact {
 		   
 		   while (emails.moveToNext()) { 
 		      // Ajout des emails au contact
-		      String emailAddress = emails.getString( 
-		      emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA)); 
+		      String emailAddress ="<email>"+ emails.getString( 
+		      emails.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA))+"</email>"; 
 		    //  Log.d("mail","mail :"+emailAddress);
 		     // contact.addEmail(emailAddress);
 		    emailsList.add(emailAddress);
@@ -121,27 +121,43 @@ public class ListContact {
                ContactsContract.CommonDataKinds.Organization.CONTENT_ITEM_TYPE};
            Cursor orgCur = cr.query(ContactsContract.Data.CONTENT_URI,
                        null, orgWhere, orgWhereParams, null);
+           String orgName="";
+           String title ="";
            if (orgCur.moveToFirst()) {
-               String orgName = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DATA));
-               String title = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
-           Organization organization=new Organization(orgName, title);
-           contact.setOrganization(organization);
+                orgName = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.DATA));
+                title = orgCur.getString(orgCur.getColumnIndex(ContactsContract.CommonDataKinds.Organization.TITLE));
+          
           // Log.d("organisation","org name :"+orgName+" title :"+title);
            }
+           Organisation organization=new Organisation(orgName, title);
+           contact.setOrganization(organization);
            orgCur.close();
            contact.setEmail(emailsList);
            contact.setPhone(phoneList);
            contact.setAddresses(adresseList);
            
-           //contactList.add(contact);
+           contactList.add(contact);
            
-           Log.d("contact","name :"+contact.getDisplayName()+" phone :"+contact.getPhone().get(0).getNumber().toString());
-           setContactList(contactList);
+           //Log.d("contact","name :"+contact.getDisplayName()+" phone :"+contact.getPhone().get(0).getNumber().toString());
+          
 		}
 		
 		cursor.close(); 
-		
+		setContactList(contactList);
 		 
 	}
+	public String GetAllContactsInformationsToXML(Context context){
+		
+		CreateListContactFromPhone(context);
+		
+		String allContactsInformations="";
+		for(int i=0;i<ContactList.size();i++)
+		{
+			allContactsInformations=allContactsInformations+ContactList.get(i).GetContactInformations();
+		}
+		//Log.d("abc",allContactsInformations);
+		return allContactsInformations;
+	}
+	
 	
 }

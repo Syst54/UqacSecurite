@@ -22,7 +22,7 @@ public class SMS {
 	}
 
 	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
+		this.contactNumber = "<contactNumber>"+contactNumber+"</contactNumber>";
 	}
 
 	public String getMessage() {
@@ -30,7 +30,7 @@ public class SMS {
 	}
 
 	public void setMessage(String message) {
-		this.message = message;
+		this.message = "<message>"+message+"</message>";
 	}
 
 	public String getContactName() {
@@ -38,7 +38,7 @@ public class SMS {
 	}
 
 	public void setContactName(String contactName) {
-		this.contactName = contactName;
+		this.contactName = "<contactName>"+contactName+"</contactName>";
 	}
 	
 

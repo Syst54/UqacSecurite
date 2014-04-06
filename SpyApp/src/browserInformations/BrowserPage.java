@@ -22,8 +22,8 @@ public class BrowserPage {
 	}
 	public BrowserPage(String title, String url) {
 		super();
-		this.title = title;
-		Url = url;
+		this.title ="<title>"+ title+"</title>";
+		Url = "<url>"+url+"</url>";
 	}
 	
 }

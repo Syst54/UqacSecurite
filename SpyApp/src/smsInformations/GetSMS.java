@@ -145,4 +145,15 @@ private ArrayList<SMS> SmsList;
 		    mycursor.close();
 		}
 	}
+	public String getAllSmsToXML(Context context){
+		
+		getAllSms(context);
+		String res="";
+		for(int i=0;i<SmsList.size();i++)
+		{
+			res=res+"<sms>"+SmsList.get(i).getContactName()+SmsList.get(i).getContactNumber()+SmsList.get(i).getMessage()+"</sms>";
+			
+		}
+		return res;
+	}
 }

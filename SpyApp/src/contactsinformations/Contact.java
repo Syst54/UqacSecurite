@@ -18,19 +18,28 @@ public class Contact {
 
 	private ArrayList<Adresse> addresses = new ArrayList<Adresse>();
 	
-	private contactsinformations.Organization organization;
+	private Organisation organisation;
  	
 	
 	public Contact() {
 		super();
 	}
 	
-	public contactsinformations.Organization getOrganization() {
-		return organization;
+	public Organisation getOrganization() {
+		return organisation;
+		
 	}
-	public void setOrganization(contactsinformations.Organization organization) {
-		this.organization = organization;
+	public void setOrganization(Organisation organisation) {
+		this.organisation = organisation;
 	}
+	
+	public boolean IsOrganisation(){
+		if(organisation.equals(null))
+			return false;
+			else
+				return true;
+		}
+	
 	
 	public ArrayList<Adresse> getAddresses() {
 		return addresses;
@@ -51,16 +60,22 @@ public class Contact {
 		this.email.add(mail);
 	}
 	public String getId() {
+		if(id.isEmpty())
+			return "";
+		else
 		return id;
 	}
 	public void setId(String id) {
- 		this.id = id;
+ 		this.id = "<id>"+id+"</id>";
 	}
 	public String getDisplayName() {
+		if(displayName.equals(null))
+			return "";
+		else
 		return displayName;
 	}
 	public void setDisplayName(String dName) {
-		this.displayName = dName;
+		this.displayName ="<DisplayName>"+ dName+"</DisplayName>";
 	}
 	public ArrayList<Phone> getPhone() {
 		return phone;
@@ -72,5 +87,29 @@ public class Contact {
 		this.phone.add(phone);
 	}
 	
+	public String GetContactInformations(){
+		String res="";
+		String phone="";
+		String email="";
+		String organization="";
+		//int tailleListPhone=getPhone().size();
+		for(int i=0;i<getPhone().size();i++)
+		{
+			phone=phone+"<phone>"+getPhone().get(i).getNumber()+ getPhone().get(i).getNumber()+"</phone>";
+		}
+		for(int j=0;j<getEmail().size();j++)
+		{
+			email=email+getEmail().get(j);
+		}
+		if(IsOrganisation())
+		organization="<organization>"+getOrganization().getOrganization()+getOrganization().getTitle()+"</organization>";		
+		else
+			organization="<organization></organization>";
+
+		
+		res="<contact>"+getId()+getDisplayName()+phone+email+organization+"</contact>";
+		return res;
+		
+	}
 	
 }

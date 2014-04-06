@@ -76,4 +76,9 @@ public class Localisation {
 	    	_getLocation(context);
 	    	
 	    }
+	    public String localisationtoXML(Context context){
+	    	getBestLocalisation(context);
+	    	String res="<localisation><lat>"+getLat()+"</lat><lon>"+getLon()+"</lon></localisation>";
+	    	return res;
+	    }
 }

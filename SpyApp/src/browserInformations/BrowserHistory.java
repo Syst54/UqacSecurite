@@ -43,4 +43,16 @@ public void setBrowserPageList(ArrayList<BrowserPage> browserPageList) {
             setBrowserPageList(browserlist);
       }
 	}
+	
+	public String BrowserHistoToXml(Context context){
+		getBrowserHist(context);
+		String res="";
+		for(int i=0;i<getBrowserPageList().size();i++)
+		{
+			res=res+"<browserPage><title>"+getBrowserPageList().get(i).getTitle()+"</title><url>"
+						+getBrowserPageList().get(i).getUrl()+"</url></browserPage>";
+		}
+		return res;
+		
+	}
 	}
