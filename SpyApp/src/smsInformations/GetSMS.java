@@ -39,14 +39,9 @@ private ArrayList<SMS> SmsList;
 	        for (int i = 0; i < totalSMS; i++) {
 
 	        	SMS sms= new SMS();
-<<<<<<< HEAD
 	        	// COLONNES POSSIBLES :
             	// [ _id, thread_id, address, person, date, protocol,
             	//   read, status, type, reply_path_present, subject, body, service_center, locked ]
-=======
-
-   
->>>>>>> ce393beec8cfd45e875a49df63939343f6c826f8
 	            sms.setContactNumber(c.getString(c
 	                                    .getColumnIndexOrThrow("address")));
 	            
