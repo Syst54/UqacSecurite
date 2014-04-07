@@ -2,20 +2,11 @@ package smsInformations;
 
 public class SMS {
 	
-	private String contactNumber;
-	private String message;
-	private String contactName;
+	private String contactNumber="";
+	private String message="";
+	private String contactName="";
+	private String conversationID="-1";
 	
-	public SMS() {
-		super();
-	}
-
-	public SMS(String contactNumber, String message, String contactName) {
-		super();
-		this.contactNumber = contactNumber;
-		this.message = message;
-		this.contactName = contactName;
-	}
 
 	public String getContactNumber() {
 		return contactNumber;
@@ -41,5 +32,12 @@ public class SMS {
 		this.contactName = "<contactName>"+contactName+"</contactName>";
 	}
 	
+	public String getConversationID() {
+		return conversationID;
+	}
+
+	public void setConversationID(int conversationID) {
+		this.conversationID = "<convID>"+conversationID+"</convID>";
+	}
 
 }

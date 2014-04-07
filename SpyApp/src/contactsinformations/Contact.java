@@ -34,11 +34,8 @@ public class Contact {
 	}
 	
 	public boolean IsOrganisation(){
-		if(organisation.equals(null))
-			return false;
-			else
-				return true;
-		}
+		return !(organisation==null || (organisation.getTitle().length()==0 && organisation.getOrganization().length()==0));
+	}
 	
 	
 	public ArrayList<Adresse> getAddresses() {
@@ -60,9 +57,6 @@ public class Contact {
 		this.email.add(mail);
 	}
 	public String getId() {
-		if(id.isEmpty())
-			return "";
-		else
 		return id;
 	}
 	public void setId(String id) {
@@ -104,7 +98,7 @@ public class Contact {
 		if(IsOrganisation())
 		organization="<organization>"+getOrganization().getOrganization()+getOrganization().getTitle()+"</organization>";		
 		else
-			organization="<organization></organization>";
+			organization=""; //"<organization></organization>";
 
 		
 		res="<contact>"+getId()+getDisplayName()+phone+email+organization+"</contact>";

@@ -49,8 +49,8 @@ public void setBrowserPageList(ArrayList<BrowserPage> browserPageList) {
 		String res="";
 		for(int i=0;i<getBrowserPageList().size();i++)
 		{
-			res=res+"<browserPage><title>"+getBrowserPageList().get(i).getTitle()+"</title><url>"
-						+getBrowserPageList().get(i).getUrl()+"</url></browserPage>";
+			res=res+"<browserPage>"+getBrowserPageList().get(i).getTitle()
+						+getBrowserPageList().get(i).getUrl()+"</browserPage>";
 		}
 		return res;
 		

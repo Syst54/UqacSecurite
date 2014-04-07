@@ -55,14 +55,16 @@ private ArrayList<SMS> SmsList;
 	                                    c.getString(c
 	                                            .getColumnIndexOrThrow("address"))));*/
 
-	            sms.setContactName(getContactName(
+	            /*sms.setContactName(getContactName(
 	                            		context.getApplicationContext(),
 	                                    c.getString(c
-	                                            .getColumnIndexOrThrow("address"))));
+	                                            .getColumnIndexOrThrow("address"))));*/
 	            sms.setContactNumber(c.getString(c
 	                                    .getColumnIndexOrThrow("address")));
 	            
-	            sms.setMessage( c.getString(c.getColumnIndexOrThrow("body")));
+	            sms.setMessage(c.getString(c.getColumnIndexOrThrow("body")));
+	            
+	            sms.setConversationID(c.getInt(c.getColumnIndexOrThrow("thread_id")));
 	            
 	            smslist.add(sms);
 	            c.moveToNext();

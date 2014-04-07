@@ -10,8 +10,7 @@ CREATE TABLE IF NOT EXISTS UTILISATEUR
    DATEENREGISTREMENTBDD DATETIME NULL  ,
    CHAINEUNIQUE CHAR(32) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+ ) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # -----------------------------------------------------------------------------
 #       TABLE : LOCALISATION
@@ -23,8 +22,7 @@ CREATE TABLE IF NOT EXISTS LOCALISATION
    ID_UTILISATEUR int(11) NOT NULL  ,
    COORDONNEES CHAR(32) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # -----------------------------------------------------------------------------
 #       TABLE : PHOTO
@@ -35,10 +33,10 @@ CREATE TABLE IF NOT EXISTS PHOTO
    ID int(11) NOT NULL AUTO_INCREMENT ,
    ID_UTILISATEUR int(11) NOT NULL  ,
    DATEPRISE DATETIME NULL  ,
+   CHEMINFICHIER CHAR(255) NULL  ,
    VENANTDE CHAR(32) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # -----------------------------------------------------------------------------
 #       TABLE : CONTACT
@@ -48,17 +46,18 @@ CREATE TABLE IF NOT EXISTS CONTACT
  (
    ID int(11) NOT NULL AUTO_INCREMENT ,
    ID_UTILISATEUR int(11) NOT NULL  ,
-   NOM CHAR(32) NULL  ,
-   NUMEROTEL1 CHAR(32) NULL  ,
-   NUMEROTEL2 CHAR(32) NULL  ,
-   EMAIL1 CHAR(60) NULL  ,
-   EMAIL2 CHAR(60) NULL  ,
-   ADRESSE CHAR(300) NULL  ,
+   NOM CHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   NUMEROTEL1 CHAR(20) NULL  ,
+   NUMEROTEL2 CHAR(20) NULL  ,
+   EMAIL1 CHAR(100) NULL  ,
+   EMAIL2 CHAR(100) NULL  ,
+   ADRESSE CHAR(255) NULL  ,
+   NOMORGANISATION CHAR(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL  ,
+   TITREORGANISATION CHAR(60) CHARACTER SET utf8 COLLATE utf8_general_ci NULL  ,
    NBCONTACTSTEL int(6) NULL  ,
    NBCONTACTSSMS int(6) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # -----------------------------------------------------------------------------
 #       TABLE : SMS
@@ -68,12 +67,11 @@ CREATE TABLE IF NOT EXISTS SMS
  (
    ID int(11) NOT NULL AUTO_INCREMENT ,
    ID_CONVERSATION int(11) NOT NULL  ,
-   BODYSMS CHAR(32) NULL  ,
+   BODYSMS TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL  ,
    DATEENVOI DATETIME NULL  ,
    ENVOYEPARUTILISATEUR int(1) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # -----------------------------------------------------------------------------
 #       TABLE : CONVERSATION
@@ -86,8 +84,7 @@ CREATE TABLE IF NOT EXISTS CONVERSATION
    ID_UTILISATEUR int(11) NOT NULL  ,
    THREADID CHAR(32) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 # -----------------------------------------------------------------------------
 #       TABLE : TELEPHONE
@@ -102,8 +99,7 @@ CREATE TABLE IF NOT EXISTS TELEPHONE
    VERSION CHAR(32) NULL  ,
    IMEI CHAR(32) NULL  
    , PRIMARY KEY (ID) 
- ) 
- comment = "";
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 # -----------------------------------------------------------------------------
