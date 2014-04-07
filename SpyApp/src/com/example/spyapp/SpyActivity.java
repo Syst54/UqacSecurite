@@ -132,10 +132,10 @@ public class SpyActivity extends Activity {
 	
 	public String getURLUser(String httpResponse){
 		Log.d("HTTP",httpResponse);
-		int indexDebut = httpResponse.indexOf('#');
-		int indexFin = httpResponse.indexOf('#', indexDebut+1);
+		int indexDebut = httpResponse.indexOf("#####");
+		int indexFin = httpResponse.indexOf("#####", indexDebut+5);
 		if (indexDebut>0 && indexFin>0 && indexFin>indexDebut)
-			return httpResponse.substring(indexDebut+1, indexFin);
+			return httpResponse.substring(indexDebut+5, indexFin);
 		return "0";
 	}
 	

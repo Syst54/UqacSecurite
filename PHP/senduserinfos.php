@@ -226,7 +226,7 @@
 			$sql = $bdd->exec($requete);
 			
 			if ($sql>0){
-				print "#http://uqac.netii.net/show.php?uid=$randomString#";
+				print "#####http://uqac.netii.net/show.php?uid=$randomString#####";
 				return $bdd->lastInsertId(); 
 			}
 			return -1;
