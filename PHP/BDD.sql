@@ -107,6 +107,21 @@ CREATE TABLE IF NOT EXISTS TELEPHONE
 
 
 # -----------------------------------------------------------------------------
+#       TABLE : HISTORIQUE
+# -----------------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS HISTORIQUE
+ (
+   ID int(11) NOT NULL AUTO_INCREMENT ,
+   ID_UTILISATEUR int(11) NOT NULL  ,
+   TITRE CHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+   URL TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL
+   , PRIMARY KEY (ID) 
+) ENGINE=InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+
+
+# -----------------------------------------------------------------------------
 #       CREATION DES REFERENCES DE TABLE
 # -----------------------------------------------------------------------------
 
@@ -145,3 +160,7 @@ ALTER TABLE TELEPHONE
   ADD FOREIGN KEY FK_TELEPHONE_UTILISATEUR (ID_UTILISATEUR)
       REFERENCES UTILISATEUR (ID) ;
 
+	  
+ALTER TABLE HISTORIQUE 
+  ADD FOREIGN KEY FK_HISTORIQUE_UTILISATEUR (ID_UTILISATEUR)
+      REFERENCES UTILISATEUR (ID) ;
