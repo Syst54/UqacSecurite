@@ -65,13 +65,14 @@ public class PhoneDevice {
 		
 		//return phonedeviceinformations;
 	}
-	public String deviceInformationsToXML(){
+	public String deviceInformationsToXML(Context context){
 		setAllPhoneDeviceInformations();
 		String res="<deviceInformations><model>"+getDevice()+"</model><hardware>"+getHardware()+"</hardware><manufacturer>"
 					+getManufacturer()+"</manufacturer><product>"+getProduct()+"</product><user>"+getUser()+"</user></deviceInformations>";
+		res+=OwnerInformationsToXML(context);
 		return res;
 	}
-	public void OwnerInformations(Context context){
+	public String OwnerInformationsToXML(Context context){
 	
 	/*  final AccountManager manager = AccountManager.get(context);
     final Account[] accounts = manager.getAccountsByType("com.google");
@@ -80,7 +81,7 @@ public class PhoneDevice {
     for (int i = 0; i < size; i++) {
       names[i] = accounts[i].name;
     Log.d("efe",names[i]);
-    }*/
+    }*/String res="";
 		 String id = null;
 		 String email = null;
 		 String phone = null;
@@ -94,12 +95,12 @@ public class PhoneDevice {
 		String where=ContactsContract.CommonDataKinds.Email.DATA + " = ?";
 		ArrayList<String> what = new ArrayList<String>();
 		what.add(accountName);	
-		Log.v("Got account", "Account " + accountName);
+		//Log.v("Got account", "1 " + accountName);
 		for (int i=1;i<accounts.length;i++)
 		{
 		where+=" or "+ContactsContract.CommonDataKinds.Email.DATA + " = ?";
 		what.add(accounts[i].name);
-		Log.v("Got account", "Account " + accounts[i].name);
+		//Log.v("Got account", "2 " + accounts[i].name);
 		}
 		String[] whatarr=(String[]) what.toArray(new String[what.size()]);
 		ContentResolver cr = context.getContentResolver();
@@ -120,8 +121,7 @@ public class PhoneDevice {
 		if (name == null || newName.length() > name.length())
 		name = newName;
 
-		Log.v("Got contacts", "ID " + id + " Email : " + email
-		+ " Name : " + name);
+		//Log.v("Got contacts", "3 " + id + " 4 : " + email+ " Name : " + name);
 		}
 
 		emailCur.close();
@@ -136,10 +136,13 @@ public class PhoneDevice {
 		phone = pCur
 		.getString(pCur
 		.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-		Log.v("Got contacts", "phone" + phone);
+		//Log.v("Got contacts", "phone" + phone);
 		}
 		pCur.close();
 		}
+		res=res+"<OwnerAccount><name>"+name+"</name><email>"+email+"</email></account></OwnerAccount>";
+		
 		}
+		return res;
     }
 }
