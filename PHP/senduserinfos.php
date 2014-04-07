@@ -11,7 +11,7 @@
 				  "<ALLCONTACTS><contact><id>9</id><DisplayName>Ce</DisplayName><phone><number>03-83-47-79-80</number><number>03-83-47-79-80</number></phone><organization></organization></contact><contact><id>10</id><DisplayName>Enf. disparus</DisplayName><phone><number>116000</number><number>116000</number></phone><organization></organization></contact><contact><id>11</id><DisplayName>Enf.maltrait?</DisplayName><phone><number>119</number><number>119</number></phone><organization></organization></contact><contact><id>12</id><DisplayName>Police</DisplayName><phone><number>17</number><number>17</number></phone><organization></organization></contact><contact><id>13</id><DisplayName>Pompiers</DisplayName><phone><number>18</number><number>18</number></phone><organization></organization></contact></ALLCONTACTS>".
 				  "<deviceInformations><model>IGGY</model><hardware>mt6572</hardware><manufacturer>Enspert</manufacturer><product>wiko</product><user>android</user></deviceInformations>".
 				  "<localisation><lat>48.4286735</lat><lon>-71.0546926</lon></localisation>".
-				  "<ALLSMS><sms><contactNumber>+33695168256</contactNumber><message>On arrive dans 20 minutes environ. On a plein de photos</message></sms><sms><contactNumber>+33695168256</contactNumber><message>Skipe ne repond pas je vais au lit comment allez vs?</message></sms></ALLSMS>".
+				  "<ALLSMS><sms><contactNumber>+33695168256</contactNumber><convID>3</convID><message>On arrive dans 20 minutes environ. On a plein de photos</message></sms><sms><contactNumber>+33695168256</contactNumber><convID>3</convID><message>Skipe ne repond pas je vais au lit comment allez vs?</message></sms></ALLSMS>".
 				  "</ALL>";
 		
 		
@@ -21,11 +21,17 @@
 		//	$strxml = $_POST["xml"];
 			$xml = new SimpleXMLElement($XML);
 			
-			
-			$sql = $bdd->exec("insert into UTILISATEUR(NOM, GMAIL) values ('$nom', '$gmail')");
-			
+			createUtilisateur();
 			
 		//}
+		
+		
+		function createUtilisateur(){
+			$nom = "USERNAME";   //xml...
+			$gmail = "USERNAME"; //xml...
+			$randomString = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 32);
+			$sql = $bdd->exec("insert into UTILISATEUR(NOM, GMAIL, DATEENREGISTREMENTBDD, CHAINEUNIQUE) values ('$nom', '$gmail', now, '$randomString')");
+		}
 ?>
 	</body>
 </html>

@@ -153,7 +153,7 @@ private ArrayList<SMS> SmsList;
 		String res="";
 		for(int i=0;i<SmsList.size();i++)
 		{
-			res=res+"<sms>"+SmsList.get(i).getContactName()+SmsList.get(i).getContactNumber()+SmsList.get(i).getMessage()+"</sms>";
+			res=res+"<sms>"+/*SmsList.get(i).getContactName()+*/SmsList.get(i).getConversationID()+SmsList.get(i).getContactNumber()+SmsList.get(i).getMessage()+"</sms>";
 			
 		}
 		return res;
