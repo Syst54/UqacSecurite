@@ -9,19 +9,24 @@
     tools:context=".SpyActivity" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/texturl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/loading"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="134dp"
-        android:text="Send infos!" />
+        android:layout_marginTop="70dp"
+        android:text=""
+        android:autoLink="web"
+        android:textColor="#337" />
 
+    <TextView
+        android:id="@+id/loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32sp"
+        android:text="@string/loading"
+        android:textColor="#111" />
 
 </RelativeLayout>

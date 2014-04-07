@@ -5,6 +5,8 @@ public class SMS {
 	private String contactNumber="";
 	private String message="";
 	private String contactName="";
+	private String status="";
+	private String date="";
 	private String conversationID="-1";
 	
 
@@ -38,6 +40,22 @@ public class SMS {
 
 	public void setConversationID(int conversationID) {
 		this.conversationID = "<convID>"+conversationID+"</convID>";
+	}
+
+	public void setStatus(String status) {
+		this.status = "<status>"+status+"</status>";
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+	
+	public void setDate(String date) {
+		this.date = "<date>"+date+"</date>";
+	}
+	
+	public String getDate() {
+		return date;
 	}
 
 }

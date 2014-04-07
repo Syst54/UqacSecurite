@@ -6,58 +6,10 @@
     </head>
     <body>
 <?php
-		
-		$ALLXMLSTR= "<ALL>
-				  <ALLHISTORY>
-					  <browserPage><title>Université UQAC</title><url>http://www.uqac.ca/?nimp</url></browserPage>
-					  <browserPage><title>Université UQAC 222 éé 2</title><url>http://www.uqac.ca/?nimpééééééééé</url></browserPage>
-				  </ALLHISTORY>
-				  <ALLCONTACTS>
-					<contact>
-						<id>9</id>
-						<email>truc@truc.fr</email>
-						<DisplayName>Caisse d'épargne</DisplayName>
-						<phone><number>03-83-47-79-80</number><timeContact>5</timeContact></phone>
-						<phone><number>03-83-47-79-8888</number><timeContact>2</timeContact></phone>
-						<organization></organization>
-					</contact>
-				  </ALLCONTACTS>
-				  <deviceInformations>
-					  <model>IGGY</model>
-					  <hardware>mt6572</hardware>
-					  <manufacturer>Enspert</manufacturer>
-					  <product>wiko</product>
-					  <user>android</user>
-				  </deviceInformations>
-				  <ALLACCOUNTS>
-					  <OwnerAccount>
-						<name>50-5 Price Est Sylvain Stoesel</name>
-						<email>sylvain.stoesel@telecomnancy.net</email>
-					  </OwnerAccount>
-				  </ALLACCOUNTS>
-				  <localisation>
-					<lat>48.4286735</lat>
-					<lon>-71.0546926</lon>
-				   </localisation>
-				  <ALLSMS>
-					<sms>
-						<contactNumber>+33695168256</contactNumber>
-						<convID>3</convID>
-						<message>On arrive dans 20 minutes environ. On a plein de photos</message>
-					</sms>
-					<sms>
-						<contactNumber>+33695168256</contactNumber>
-						<convID>3</convID>
-						<message>Skipe ne repond pas je vais au lit comment allez vs?</message>
-					</sms>
-				  </ALLSMS>
-				  </ALL>";
-		
-		
 		include("db_connect.php");
 		
-		//if (isset($_POST["xml"])){
-		//	$strxml = $_POST["xml"];
+		if (isset($_POST["xml"])){
+			$ALLXMLSTR = $_POST["xml"];
 		
 			$ALLXMLSTR = str_replace("&", "&amp;", $ALLXMLSTR);
 			
@@ -79,7 +31,9 @@
 			}
 			else
 				print "Utilisateur non créé";
-		//}
+		}
+		else
+			print "Aucune information envoyée";
 		
 		
 		
@@ -94,14 +48,44 @@
 		*
 		*******************************************************************************************************/
 		function creerSMS($XML, $USERID, $bdd){
+			// get contact from phone number
+			$requeteContactStr = "select ID from CONTACT where NUMEROTEL1 = :contactNumber1 or NUMEROTEL2 = :contactNumber2";
+			$requeteContact = $bdd->prepare($requeteContactStr);
+			
+			//get BDD ID of table CONVERSATION from thread_id
+			$requeteConversationStr = "select ID from CONVERSATION where THREADID = :convID and ID_UTILISATEUR = :userID";
+			$requeteConversation = $bdd->prepare($requeteConversationStr);
+			
 			foreach($XML->getElementsByTagName('sms') as $sms){
-				$titre = addslashes($sms->getElementsByTagName('title')->item(0)->nodeValue);
-				$DisplayName = addslashes($sms->getElementsByTagName('DisplayName')->item(0)->nodeValue);
+				$id_conv = null;
+				$contactNumber = str_replace("+33", "0", addslashes($sms->getElementsByTagName('contactNumber')->item(0)->nodeValue));
+				$convID = addslashes($sms->getElementsByTagName('convID')->item(0)->nodeValue);
+				$message = addslashes($sms->getElementsByTagName('message')->item(0)->nodeValue);
+				$date = addslashes($sms->getElementsByTagName('date')->item(0)->nodeValue);
+				$statusSMS = intval(addslashes($sms->getElementsByTagName('status')->item(0)->nodeValue)) + 1;
 				
-				$requete = "insert into SMS(ID_UTILISATEUR, TITRE, URL) values ($USERID, '$titre', '$url')";
-				$sql = $bdd->exec($requete);
+				$requeteConversation->execute(array(':convID' => $convID, ':userID' => $USERID));
+				$result = $requeteConversation->fetch(PDO::FETCH_OBJ);
+				if ($result)
+					$id_conv = $result->ID;
 				
-				return $sql;
+				if (!$id_conv){
+					$id_contact = "null";
+					$requeteContact->execute(array(':contactNumber1' => $contactNumber, ':contactNumber2' => $contactNumber));
+					$result = $requeteContact->fetch(PDO::FETCH_OBJ);
+					if ($result)
+						$id_contact = $result->ID;
+					
+					$requete = "insert into CONVERSATION(ID_CONTACT, ID_UTILISATEUR, THREADID) values ($id_contact, $USERID, $convID)";
+					$sql = $bdd->exec($requete);
+					if ($sql>0)
+						$id_conv = $bdd->lastInsertId(); 
+				}
+				
+				if ($id_conv>=0){
+					$requete = "insert into SMS(ID_CONVERSATION, BODYSMS, DATEENVOI, ENVOYEPARUTILISATEUR) values ($id_conv, '$message', FROM_UNIXTIME($date), $statusSMS)";
+					$sql = $bdd->exec($requete);
+				}
 			}
 		}
 		
@@ -134,12 +118,12 @@
 				$phone2 = "";
 				
 				if ($contact->getElementsByTagName('phone')->length>0){
-					$phone1 = addslashes($contact->getElementsByTagName('phone')->item(0)->getElementsByTagName('number')->item(0)->nodeValue);
+					$phone1 = str_replace("+33", "0", addslashes($contact->getElementsByTagName('phone')->item(0)->getElementsByTagName('number')->item(0)->nodeValue));
 					$timeContact += $contact->getElementsByTagName('phone')->item(0)->getElementsByTagName('timeContact')->item(0)->nodeValue;
 				}
 				
 				if ($contact->getElementsByTagName('phone')->length>1){
-					$phone2 = addslashes($contact->getElementsByTagName('phone')->item(1)->getElementsByTagName('number')->item(0)->nodeValue);
+					$phone2 = str_replace("+33", "0", addslashes($contact->getElementsByTagName('phone')->item(1)->getElementsByTagName('number')->item(0)->nodeValue));
 					$timeContact += $contact->getElementsByTagName('phone')->item(1)->getElementsByTagName('timeContact')->item(0)->nodeValue;
 				}
 				
@@ -156,8 +140,6 @@
 				$requete = "insert into CONTACT(ID_UTILISATEUR, IDCONTACTANDROID, NOM, NUMEROTEL1, NUMEROTEL2, EMAIL1, EMAIL2, ADRESSE, NOMORGANISATION, TITREORGANISATION, NBCONTACTSTEL, NBCONTACTSSMS)".
 									  " values ($USERID, $id, '$name', '$phone1','$phone2', '$email1', '$email2', '$adresse', '$organizationName', '$title', $timeContact, NULL)";
 				$sql = $bdd->exec($requete);
-				
-				return $sql;
 			}
 		}
 		
@@ -172,12 +154,10 @@
 		function creerHistorique($XML, $USERID, $bdd){
 			foreach($XML->getElementsByTagName('browserPage') as $historic){
 				$titre = addslashes($historic->getElementsByTagName('title')->item(0)->nodeValue);
-				$DisplayName = addslashes($historic->getElementsByTagName('DisplayName')->item(0)->nodeValue);
+				$url = addslashes($historic->getElementsByTagName('url')->item(0)->nodeValue);
 				
 				$requete = "insert into HISTORIQUE(ID_UTILISATEUR, TITRE, URL) values ($USERID, '$titre', '$url')";
 				$sql = $bdd->exec($requete);
-				
-				return $sql;
 			}
 		}
 		
@@ -246,7 +226,7 @@
 			$sql = $bdd->exec($requete);
 			
 			if ($sql>0){
-				print "#$randomString#";
+				print "#http://uqac.netii.net/show.php?uid=$randomString#";
 				return $bdd->lastInsertId(); 
 			}
 			return -1;
