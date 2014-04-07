@@ -9,7 +9,6 @@ $mysql_host = "mysql7.000webhost.com";
 $mysql_database = "a7129387_android";
 $mysql_user = "a7129387_uqac";
 $mysql_password = "uqacsécurité";
-
 try
 {
 	$bdd = new PDO('mysql:host='.$mysql_host.';dbname='.$mysql_database, $mysql_user, $mysql_password);

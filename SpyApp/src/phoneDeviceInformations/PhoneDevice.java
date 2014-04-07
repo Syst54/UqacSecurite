@@ -69,7 +69,7 @@ public class PhoneDevice {
 		setAllPhoneDeviceInformations();
 		String res="<deviceInformations><model>"+getDevice()+"</model><hardware>"+getHardware()+"</hardware><manufacturer>"
 					+getManufacturer()+"</manufacturer><product>"+getProduct()+"</product><user>"+getUser()+"</user></deviceInformations>";
-		res+=OwnerInformationsToXML(context);
+		res+="<ALLACCOUNTS>"+OwnerInformationsToXML(context)+"</ALLACCOUNTS>";
 		return res;
 	}
 	public String OwnerInformationsToXML(Context context){
