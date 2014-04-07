@@ -50,7 +50,7 @@ public class PhoneDevice {
 		this.product=android.os.Build.PRODUCT;
 		this.User=android.os.Build.USER;
 		
-		//Log.d("phonedevice",getDevice()+ " "+getHardware()+ " "+getManufacturer()+ " "+getProduct()+ " "+getUser());
+		Log.d("phonedevice",getDevice()+ " "+getHardware()+ " "+getManufacturer()+ " "+getProduct()+ " "+getUser());
 		
 	}
 	public void getAllPhoneDeviceInformations(){
