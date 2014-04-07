@@ -40,8 +40,6 @@ public class ListContact {
 		
 		ContentResolver cr = context.getContentResolver();
 		ArrayList<Contact>contactList=new ArrayList<Contact>();
-
-		
 		Cursor cursor = cr.query(ContactsContract.Contacts.CONTENT_URI,null, null, null, null); 
 		
 		while (cursor.moveToNext()) { 

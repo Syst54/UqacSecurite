@@ -38,27 +38,8 @@ private ArrayList<SMS> SmsList;
 	        for (int i = 0; i < totalSMS; i++) {
 
 	        	SMS sms= new SMS();
-	           /* Log.d("GetSMS",
-	                    "Contact number : "
-	                            + c.getString(c
-	                                    .getColumnIndexOrThrow("address"))
-	                            + "\n"
-	                            + "msg : "
-	                            + c.getString(c.getColumnIndexOrThrow("body"))
-	                            + "\n"
-	                            + "ID : "
-	                            + c.getString(c.getColumnIndexOrThrow("_id"))
-	                            + "\n"
-	                            + "Person : "
-	                            + getContactName(
-	                            		context.getApplicationContext(),
-	                                    c.getString(c
-	                                            .getColumnIndexOrThrow("address"))));*/
 
-	            /*sms.setContactName(getContactName(
-	                            		context.getApplicationContext(),
-	                                    c.getString(c
-	                                            .getColumnIndexOrThrow("address"))));*/
+   
 	            sms.setContactNumber(c.getString(c
 	                                    .getColumnIndexOrThrow("address")));
 	            
