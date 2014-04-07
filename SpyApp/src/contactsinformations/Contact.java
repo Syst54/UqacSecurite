@@ -89,7 +89,7 @@ public class Contact {
 		//int tailleListPhone=getPhone().size();
 		for(int i=0;i<getPhone().size();i++)
 		{
-			phone=phone+"<phone>"+getPhone().get(i).getNumber()+ getPhone().get(i).getNumber()+"</phone>";
+			phone=phone+"<phone>"+getPhone().get(i).getNumber()+getPhone().get(i).getTimeContact()+"</phone>";
 		}
 		for(int j=0;j<getEmail().size();j++)
 		{

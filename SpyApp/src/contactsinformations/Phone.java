@@ -12,7 +12,7 @@ public class Phone {
  		this.number = number;
  	}
  
- 	public String getType() {
+ 	public String getTimeContact() {
  		return timeContact;
  	}
  
