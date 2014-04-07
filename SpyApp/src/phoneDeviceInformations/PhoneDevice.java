@@ -140,9 +140,10 @@ public class PhoneDevice {
 		}
 		pCur.close();
 		}
-		res=res+"<OwnerAccount><name>"+name+"</name><email>"+email+"</email></account></OwnerAccount>";
+		res=res+"<OwnerAccount><name>"+name+"</name><email>"+email+"</email></OwnerAccount>";
 		
 		}
+		Log.d("try",res);
 		return res;
     }
 }
