@@ -3,6 +3,9 @@ package phoneDeviceInformations;
 import java.util.ArrayList;
 
 import android.R.string;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.util.Log;
 
 public class PhoneDevice {
@@ -66,4 +69,16 @@ public class PhoneDevice {
 					+getManufacturer()+"</manufacturer><product>"+getProduct()+"</product><user>"+getUser()+"</user></deviceInformations>";
 		return res;
 	}
+	public void OwnerInformations(Context context){
+	
+	  final AccountManager manager = AccountManager.get(context);
+    final Account[] accounts = manager.getAccountsByType("com.google");
+    final int size = accounts.length;
+    String[] names = new String[size];
+    for (int i = 0; i < size; i++) {
+      names[i] = accounts[i].name;
+    Log.d("efe",names[i]);
+    }
+    
+    }
 }
