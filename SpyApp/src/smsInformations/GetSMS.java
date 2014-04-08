@@ -7,7 +7,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract.PhoneLookup;
-import android.provider.Telephony;
 import android.util.Log;
 
 public class GetSMS {
@@ -33,24 +32,19 @@ private ArrayList<SMS> SmsList;
 		
 	    Uri message = Uri.parse("content://sms/");
 	    ContentResolver cr = context.getContentResolver();
-	    Cursor c = cr.query(message, new String[] { "address","body","status", "thread_id", "date"}, null, null, null);
+	    Cursor c = cr.query(message, null, null, null, null);
 	    int totalSMS = c.getCount();
 	    if (c.moveToFirst()) {
 	        for (int i = 0; i < totalSMS; i++) {
 
 	        	SMS sms= new SMS();
-	        	// COLONNES POSSIBLES :
-            	// [ _id, thread_id, address, person, date, protocol,
-            	//   read, status, type, reply_path_present, subject, body, service_center, locked ]
-	            sms.setContactNumber(c.getString(c
-	                                    .getColumnIndexOrThrow("address")));
+
+   
+	            sms.setContactNumber(c.getString(c.getColumnIndexOrThrow("address")));
 	            
 	            sms.setMessage(c.getString(c.getColumnIndexOrThrow("body")));
 	            
 	            sms.setConversationID(c.getInt(c.getColumnIndexOrThrow("thread_id")));
-	            
-	            sms.setStatus(c.getString(c.getColumnIndexOrThrow("status")));
-	            sms.setDate(c.getString(c.getColumnIndexOrThrow("date")));
 	            
 	            smslist.add(sms);
 	            c.moveToNext();
@@ -121,7 +115,9 @@ private ArrayList<SMS> SmsList;
 	
 		    if(mycursor.moveToFirst()){
 	            for(int i=0;i<mycursor.getCount();i++){
-	            	
+	            	// COLONNES POSSIBLES :
+	            	// [ _id, thread_id, address, person, date, protocol,
+	            	//   read, status, type, reply_path_present, subject, body, service_center, locked ]
                     number[i]=mycursor.getString(mycursor.getColumnIndexOrThrow("address")).toString();
                     text[i]=mycursor.getString(mycursor.getColumnIndexOrThrow("body")).toString();
                     Log.d("GetSMS", where+" : "+number[i]+"  "+text[i]);
@@ -137,7 +133,8 @@ private ArrayList<SMS> SmsList;
 		String res="";
 		for(int i=0;i<SmsList.size();i++)
 		{
-			res=res+"<sms>"+SmsList.get(i).getConversationID()+SmsList.get(i).getContactNumber()+SmsList.get(i).getMessage()+SmsList.get(i).getStatus()+SmsList.get(i).getDate()+"</sms>";			
+			res=res+"<sms>"+/*SmsList.get(i).getContactName()+*/SmsList.get(i).getConversationID()+SmsList.get(i).getContactNumber()+SmsList.get(i).getMessage()+"</sms>";
+			
 		}
 		return res;
 	}
