@@ -40,6 +40,7 @@
 			genererTelephone($bdd, $USER->ID);
 			genererContacts($bdd, $USER->ID);
 			genererHistorique($bdd, $USER->ID);
+			genererConversations($bdd, $USER->ID);
 		}
 		else
 			print "<div id='erreur'>Les données de l'utilisateur auxquelles vous souhaiter accéder n'existent pas ou ont été supprimées</div>";
@@ -152,6 +153,33 @@
 		}
 		
 		
+		
+		
+		
+		/*******************************************************************************************************
+		*
+		*   GENERATION ENCADRE CONVERSATIONS
+		*
+		*******************************************************************************************************/
+		function genererConversations($bdd, $USERID){
+			print "<h2>Conversations</h2><span class='bouton' id='bouton_conv' onclick='afficher_cacher(\"conv\");'>Afficher le texte</span> ";
+			print "<div id='conv' class='texte' style='display:none'>";
+			$requete = "select distinct conv.ID as ID, cont.NOM as NOM, conv.THREADID as THREADID from CONVERSATION conv, CONTACT cont where conv.ID_UTILISATEUR=$USERID and cont.ID_UTILISATEUR=$USERID and conv.ID_CONTACT=cont.ID";
+			$sql = $bdd->query($requete);
+			while ($conv=$sql->fetch(PDO::FETCH_OBJ)){
+				print "<div class='divEntite'>";
+				print "<h3>Conversation n°".$conv->THREADID." avec le contact <b>".$conv->NOM."</b></h3>";
+				$requete2 = "select * from SMS where ID_CONVERSATION=".$conv->ID;
+				$sql2 = $bdd->query($requete2);
+				while ($sms=$sql2->fetch(PDO::FETCH_OBJ)){
+					print "<div class='".($sms->ENVOYEPARUTILISATEUR==1?"bulleUser":"bulleContact")."'>";
+					print $sms->BODYSMS;
+					print "</div>";
+				}
+				print "</div>";
+			}
+			print "</div>";
+		}
 		
 		
 		function getEmailLink($email){

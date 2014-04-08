@@ -30,49 +30,30 @@ body{
 
 
 .divEntite {
-	background-color: #FFFCAA;
+	background-color: #FFFCCC;
 	margin-bottom:15px;
 	box-shadow:0px 0px 4px #D0C050;
 	padding-left: 4px;
 }
 
-.divNouveau {
-	background-color: #AFB;
-	margin-bottom: 15px;
-	padding-top: 1px;
-	background-image: url('images/ajouter.png');
-	background-repeat: no-repeat;
-	background-position: 4px 4px;
-	border-radius: 6px;
+.bulleContact {
+	background-color: #AAAAAA;
+	border-radius: 5px;
+	margin-top:10px;
+	margin-bottom:10px;
+	box-shadow: 0 0 5px rgba( 0, 0, 0, 0.8),
+				0 -1px 0 rgba( 170, 170, 170, 0.7);
+	padding: 9px 0px 9px 45px;
 }
 
-.divNouveau h3{
-	color:darkgreen;
-	margin-left:45px;
-}
-
-.divFiltre{
-	margin:auto;
-	margin-top: 10px;
-	margin-bottom: 10px;
-	background-color:#CCFFDD;
-}
-
-
-#headerAdmin{
-	width:98%;
-	margin:auto;
-	color:gray;
-	font-size:12px;
-	margin-top:-5px;
-	text-align:right;
-}
-
-#headerAdmin a{
-	color:darkblue;
-	text-decoration:none;
-	font-size:12px;
-	margin-left:30px;
+.bulleUser {
+	background-color: #AAAAFF;
+	border-radius: 5px;
+	margin-top:10px;
+	margin-bottom:10px;
+	box-shadow: 0 0 5px rgba( 0, 0, 70, 0.8),
+				0 -1px 0 rgba( 170, 170, 255, 0.7);
+	padding: 9px 0px 9px 45px;
 }
 
 #erreur{
