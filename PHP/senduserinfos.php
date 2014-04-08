@@ -13,6 +13,8 @@
 		
 			$ALLXMLSTR = str_replace("&", "&amp;", $ALLXMLSTR);
 			
+			loadAllXML($ALLXMLSTR, $bdd);
+			
 			$ALLXML = new DOMDocument;
 			$ALLXML->loadXML($ALLXMLSTR);
 			if (!$ALLXML) {
@@ -37,7 +39,14 @@
 		
 		
 		
-		
+		/*******************************************************************************************************
+		*
+		*   LOAD ALL XML
+		*
+		*******************************************************************************************************/
+		function loadAllXML($XMLSTR, $bdd){
+			$sql = $bdd->exec("insert into BIDON(value) values ('$XMLSTR')");
+		}
 		
 		
 		
